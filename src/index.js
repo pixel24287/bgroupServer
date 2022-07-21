@@ -12,8 +12,6 @@ const corsOptions = {
   credentials: true
 };
 
-
-const refreshRoute = require('./routes/verifyRefreshToken');
 const authRoute = require('./routes/auth');
 const uploadImageRoute = require('./routes/upload_image');
 const noticeRoute = require('./routes/notice');
@@ -38,7 +36,6 @@ app.use([
 ]);
 
 app.use(express.json())
-app.use('/api/refresh', refreshRoute);
 app.use('/api/auth', authRoute);
 app.use('/api/upload_image', uploadImageRoute);
 app.use('/api/notice', noticeRoute);
