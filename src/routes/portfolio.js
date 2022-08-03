@@ -92,7 +92,6 @@ router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
     try {
         await conn.beginTransaction();
         await conn.query('DELETE FROM `portfolio` WHERE url = ?', [req.body.url]);
-        console.log(req.body.url.split('/')[4])
         const params = {
             Bucket: "bgroup.link",
             Key: req.body.url.split('/')[4]

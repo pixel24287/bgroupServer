@@ -43,7 +43,6 @@ router.post('/',upload.array("files", 3), (req, res) => {
 //Delete
 router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
   try {
-    console.log(req.body.url.split('/')[4])
     const params = {
         Bucket: "bgroup.link",
         Key: req.body.url.split('/')[4]

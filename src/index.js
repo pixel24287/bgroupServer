@@ -1,4 +1,5 @@
 const express = require('express');
+const helmet = require("helmet");
 const app = express();
 
 const dotenv = require('dotenv');
@@ -32,7 +33,8 @@ app.use([
   express.static("public"),
   express.urlencoded({ extended: false }),
   express.json(),
-  cors()
+  cors(),
+  helmet()
 ]);
 
 app.use(express.json())
