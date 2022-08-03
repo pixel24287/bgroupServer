@@ -32,7 +32,7 @@ app.use([
   express.static("public"),
   express.urlencoded({ extended: false }),
   express.json(),
-  cors(corsOptions)
+  cors()
 ]);
 
 app.use(express.json())
