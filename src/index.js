@@ -4,6 +4,10 @@ const app = express();
 
 const dotenv = require('dotenv');
 const cors = require('cors')
+const fs = require("fs");
+const http = require("http");
+const https = require("https");
+
 
 dotenv.config()
 
@@ -55,6 +59,25 @@ app.use('/api/order_registration_comment', orderRegistrationCommentRoute);
 app.use('/api/portfolio', portfolioRoute);
 app.use('/api/slider', sliderRoute);
 
-app.listen(5000, () => {
+
+/*
+const options = {
+  key: fs.readFileSync(`/etc/letsencrypt/live/bgroup.tk/privkey.pem`, 'utf8'),
+  cert: fs.readFileSync(`/etc/letsencrypt/live/bgroup.tk/cert.pem`, 'utf8'),
+  ca: fs.readFileSync(`/etc/letsencrypt/live/bgroup.tk/chain.pem`, 'utf8'),
+};
+*/
+/*
+http.createServer(app).listen(5000, () => {
+	console.log('HTTP Server running on port 80');
+});
+
+https.createServer(options, app).listen(443, () => {
+	console.log('HTTPS Server running on port 443');
+});
+*/
+
+const port = process.env.PORT;
+app.listen(port, () => {
   console.log('connect')
 })
