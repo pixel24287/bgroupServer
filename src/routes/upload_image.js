@@ -3,6 +3,7 @@ const {verifyToken, verifyTokenAndAuthorization, verifyTokenAndAdmin, verifyToke
 const multer = require('multer');
 const multerS3 = require('multer-s3')
 const aws = require('aws-sdk')
+const pool = require('../mysql');
 
 //multer image upload setting
 //aws.S3 객체를 생성하고 s3에 담음 
@@ -40,21 +41,32 @@ router.post('/',upload.array("files", 3), (req, res) => {
     }
 })
 
-//Delete
-router.delete('/:id', verifyTokenAndAdmin, async (req, res) => {
+//Delete Admin
+router.delete('/admin/:id/:ids', verifyTokenAndAdmin, async (req, res) => {
+  const conn = await pool.getConnection();
   try {
+    await conn.beginTransaction();
+    await Promise.all(req.body.url.map(async (val, index) => {
+      if(val.reply_count) {
+      }
+    }))
     const params = {
-        Bucket: "bgroup.link",
-        Key: req.body.url.split('/')[4]
+      Bucket: "bgroup.link",
+      Key: req.body.url.split('/')[4]
     };
     s3.deleteObject(params, function(err, data) {
-        if (err) console.log(err, err.stack);
-        else console.log(data);
-      });
+      if (err) console.log(err, err.stack);
+      else console.log(data);
+    });
+
+    await conn.commit();
     return res.status(201).json('success');
   } catch(err) {
     console.log(err);
+    await conn.rollback();
     return res.status(500).json('error');
+  } finally {
+    conn.release();
   }
 });
 

@@ -7,7 +7,7 @@ router.post('/:id/:list_id', verifyTokenAndAdmin, async (req, res) => {
     const conn = await pool.getConnection();
     try {
         await conn.beginTransaction();
-        const ins0 = await conn.query('SELECT product_list.delete_list FROM product_list, product_post WHERE product_post.id = ? AND product_post.list_id = product_list.id', [req.body.postId])
+        const ins0 = await conn.query('SELECT delete_list FROM product_list WHERE id = ?', [req.body.postId])
         if(ins0[0][0].delete_list) {
             await conn.commit();
             return res.status(405).json('delete');
@@ -167,8 +167,7 @@ router.get('/:id', async (req, res) => {
     const conn = await pool.getConnection();
     try {
         await conn.beginTransaction();
-        const ins0 = await conn.query('SELECT * FROM `product_post` WHERE id = ?', [req.params.id]);
-        const ins1 = await conn.query('SELECT delete_list FROM `product_list` WHERE id = ?', [ins0[0][0].list_id]);
+        const ins1 = await conn.query('SELECT product_list.delete_list FROM product_list, product_post WHERE product_post.id = ? AND product_post.list_id = product_list.id', [req.params.id])
         if (ins1[0][0].delete_list) {
             await conn.commit();
             return res.status(405).json('delete');
